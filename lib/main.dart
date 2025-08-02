@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:movie_people_app/presentationLayer/screens/splash_screen.dart';
 import 'dataLayer/cubit/app_cubit.dart';
 import 'core/utils/constansts.dart';
@@ -9,6 +10,7 @@ import 'core/utils/injection.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await init();
+  await FlutterDownloader.initialize(debug: true);
   runApp(const MyApp());
 }
 

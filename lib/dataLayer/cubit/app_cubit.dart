@@ -1,6 +1,11 @@
+import 'dart:io';
+
+import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:movie_people_app/dataLayer/cubit/app_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_people_app/dataLayer/networks/models/person_model.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../../core/utils/constansts.dart';
 import '../networks/repository/repository.dart';
@@ -64,5 +69,32 @@ class AppBloc extends Cubit<AppState> {
         }
       },
     );
+  }
+
+  Future<void> downloadImage(String imageUrl, String fileName) async {
+    emit(SaveImageLoading());
+
+    final dir = await getExternalStorageDirectory();
+    final downloadDir = Directory('${dir?.path}/Download');
+
+    if (!await downloadDir.exists()) {
+      await downloadDir.create(recursive: true);
+    }
+
+    final filePath = '${downloadDir.path}/$fileName';
+    final file = File(filePath);
+
+    if (await file.exists()) {
+      await file.delete();
+    }
+
+    await FlutterDownloader.enqueue(
+      url: imageUrl,
+      savedDir: downloadDir.path,
+      fileName: fileName,
+      showNotification: true,
+      openFileFromNotification: true,
+    );
+    emit(SaveImageSuccess());
   }
 }

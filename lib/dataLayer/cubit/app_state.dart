@@ -20,19 +20,11 @@ class GetPersonPaginationError extends AppState {
   GetPersonPaginationError({required this.error});
 }
 
-class SaveImageLoading extends AppState {}
-
-class SaveImageProgress extends AppState {
-  final int progress;
-  SaveImageProgress(this.progress);
-}
-
-class SaveImageSuccess extends AppState {
-  final String filePath;
-  SaveImageSuccess({required this.filePath});
-}
+class SaveImageSuccess extends AppState {}
 
 class SaveImageError extends AppState {
-  final String message;
-  SaveImageError(this.message);
+  final String error;
+  SaveImageError({required this.error});
 }
+
+class SaveImageLoading extends AppState {}
