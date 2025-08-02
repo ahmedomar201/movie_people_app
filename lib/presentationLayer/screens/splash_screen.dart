@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import '../../core/utils/images.dart';
-import 'person_list_screen.dart';
+import 'person_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -39,7 +39,7 @@ class _SplashScreenState extends State<SplashScreen>
             Image.asset(ImagesConstant.appLogo, width: 200, height: 200),
             const SizedBox(height: 30),
             const Text(
-              'Book app',
+              'Movie app',
               style: TextStyle(
                 color: Colors.black,
                 fontSize: 20,

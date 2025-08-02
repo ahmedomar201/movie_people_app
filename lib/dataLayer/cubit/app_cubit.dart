@@ -1,6 +1,7 @@
 import 'package:movie_people_app/dataLayer/cubit/app_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_people_app/dataLayer/networks/models/person_model.dart';
+
 import '../../core/utils/constansts.dart';
 import '../networks/repository/repository.dart';
 
@@ -46,11 +47,14 @@ class AppBloc extends Cubit<AppState> {
           emit(GetPersonError(error: failure));
         }
       },
-      (data) {
-        allPerson.add(data);
-        page++;
-      
-        person = data;
+      (dataList) {
+        if (dataList.isEmpty) {
+          hasMoreData = false;
+        } else {
+          allPerson.addAll(dataList);
+          page++;
+        }
+
         isLoadingMore = false;
 
         if (isPagination) {
