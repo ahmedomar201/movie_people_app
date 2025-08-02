@@ -3,10 +3,10 @@
 
 A Flutter application that displays popular people (actors, directors, etc.) using [The Movie Database API (TMDB)](https://www.themoviedb.org/).
 
-![App Screenshot_1](assets/images/screenshot1.png)  
+<!-- ![App Screenshot_1](assets/images/screenshot1.png)  
 ![App Screenshot_2](assets/images/screenshot2.png)
 ![App Screenshot_3](assets/images/screenshot2.png)
-![App Screenshot_4](assets/images/screenshot2.png)
+![App Screenshot_4](assets/images/screenshot2.png) -->
 
 ---
 
