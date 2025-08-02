@@ -10,7 +10,7 @@ import 'core/utils/injection.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await init();
-  await FlutterDownloader.initialize(debug: true);
+  await FlutterDownloader.initialize(debug: true, ignoreSsl: true);
   runApp(const MyApp());
 }
 

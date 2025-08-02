@@ -44,7 +44,10 @@ class FullImageScreen extends StatelessWidget {
                   child: Image.network(
                     imageUrl,
                     fit: BoxFit.contain,
-                    errorBuilder: (context, error, stackTrace) => NewWidget(),
+                    errorBuilder: (context, error, stackTrace) => Text(
+                      'Image not available',
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ),
                 ),
                 Positioned(
@@ -66,18 +69,6 @@ class FullImageScreen extends StatelessWidget {
           ),
         );
       },
-    );
-  }
-}
-
-class NewWidget extends StatelessWidget {
-  const NewWidget({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Text(
-      'Image not available',
-      style: TextStyle(color: Colors.white),
     );
   }
 }
