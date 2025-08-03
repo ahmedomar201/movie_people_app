@@ -55,7 +55,7 @@ class FullImageScreen extends StatelessWidget {
                   right: 8,
                   child: IconButton(
                     onPressed: () {
-                      cubit.downloadImage(imageUrl, person.profilePath ?? '');
+                      cubit.saveImageFromUrl(imageUrl, person.profilePath ?? '');
                     },
                     icon: const Icon(Icons.download),
                     color: Colors.white,

@@ -1,9 +1,11 @@
 import 'dart:io';
-import 'package:flutter_downloader/flutter_downloader.dart';
+import 'dart:typed_data';
+import 'package:dio/dio.dart';
 import 'package:movie_people_app/dataLayer/cubit/app_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_people_app/dataLayer/networks/models/person_model.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:saver_gallery/saver_gallery.dart';
 import '../../core/utils/constansts.dart';
 import '../networks/repository/repository.dart';
 
@@ -68,43 +70,33 @@ class AppBloc extends Cubit<AppState> {
     );
   }
 
-  Future<void> requestPermission() async {
-  PermissionStatus status = await Permission.photos.request();
-  if (status.isGranted) {
-    // Permission granted, you can access photos and media files
-  } else {
-    // Handle permission denial
-  }
-}
-
-  Future<void> downloadImage(String imageUrl, String fileName) async {
-
-    await requestPermission();
+  Future<void> saveImageFromUrl(String imageUrl, String fileName) async {
     emit(SaveImageLoading());
 
     try {
-      final downloadDir = Directory('/storage/emulated/0/Download');
-
-      if (!await downloadDir.exists()) {
-        await downloadDir.create(recursive: true);
+      final status = await Permission.photos.request();
+      if (!status.isGranted) {
+        emit(SaveImageError(error: 'Permission denied'));
+        return;
       }
 
-      final filePath = '${downloadDir.path}/$fileName';
-      final file = File(filePath);
-
-      if (await file.exists()) {
-        await file.delete();
-      }
-
-      await FlutterDownloader.enqueue(
-        url: imageUrl,
-        savedDir: downloadDir.path,
-        fileName: fileName,
-        showNotification: true,
-        openFileFromNotification: true,
+      final response = await Dio().get<List<int>>(
+        imageUrl,
+        options: Options(responseType: ResponseType.bytes),
       );
 
-      emit(SaveImageSuccess());
+      if (response.statusCode == 200) {
+        Uint8List imageBytes = Uint8List.fromList(response.data!);
+
+        final result = await SaverGallery.saveImage(
+          imageBytes,
+          fileName: fileName,
+          skipIfExists: false, // required in saver_gallery >=1.0.1
+        );
+        emit(SaveImageSuccess());
+      } else {
+        emit(SaveImageError(error: 'Download failed: ${response.statusCode}'));
+      }
     } catch (e) {
       emit(SaveImageError(error: e.toString()));
     }
