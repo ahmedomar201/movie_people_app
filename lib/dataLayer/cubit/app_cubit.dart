@@ -3,7 +3,7 @@ import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:movie_people_app/dataLayer/cubit/app_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_people_app/dataLayer/networks/models/person_model.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import '../../core/utils/constansts.dart';
 import '../networks/repository/repository.dart';
 
@@ -68,7 +68,18 @@ class AppBloc extends Cubit<AppState> {
     );
   }
 
+  Future<void> requestPermission() async {
+  PermissionStatus status = await Permission.photos.request();
+  if (status.isGranted) {
+    // Permission granted, you can access photos and media files
+  } else {
+    // Handle permission denial
+  }
+}
+
   Future<void> downloadImage(String imageUrl, String fileName) async {
+
+    await requestPermission();
     emit(SaveImageLoading());
 
     try {
